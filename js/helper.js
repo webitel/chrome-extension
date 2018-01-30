@@ -4,6 +4,7 @@
 
 "use strict";
 
+const VIEW_FOLDER = 'app/view/';
 
 var Helper = {
     _hidden: false,
@@ -14,17 +15,31 @@ var Helper = {
     missedNotifications: {},
     videoParamsBest: {},
     extensionPort: null,
+    state: {
+        currentViewTemplate: VIEW_FOLDER + "init" + ".html",
+        currentViewData: null,
+        _prevActiveTabName: null,
+        activeTabName: null,
+        search: "",
+    },
 
     init: () => {
-        console.log("INIT");
+
         const auth = Helper.getAuthStorage();
         if (auth && auth.serverEngine && localStorage.getItem('x_key') && localStorage.getItem('x_token')) {
             Helper.whoami(auth);
         } else {
-            Helper.sendSession('init', {tabName: 'login', manifest: Helper._manifest});
+            // Helper.sendSession('init', {tabName: 'login', manifest: Helper._manifest});
+            Helper.setView('login', false, null);
         }
         Helper.changeTrayMenu();
     },
+
+    setState: (state) => {
+        Helper.state = state;
+    },
+
+    getState: () => Helper.state,
 
 
     getVersion: () => {
@@ -40,6 +55,14 @@ var Helper = {
             }
         }
         return res;
+    },
+
+    getActiveCall: () => {
+        if (Helper.getSession()) {
+            return Helper.session.activeCalls[Helper.session.activeCall];
+        } else {
+            return null
+        }
     },
 
     getAuthStorage: () => {
@@ -95,8 +118,7 @@ var Helper = {
 
             localStorage.removeItem('x_token');
             localStorage.removeItem('x_key');
-            Helper.sendSession('unauthorized', {});
-
+            Helper.setView('login', false, null);
         })
         ;
     },
@@ -123,7 +145,7 @@ var Helper = {
             Helper.session = null;
         }
         Helper.changeTrayMenu();
-        Helper.sendSession('logout', {});
+        Helper.setView('login', false, null);
     },
 
     whoami: (auth) => {
@@ -142,7 +164,7 @@ var Helper = {
         .error( () => {
             localStorage.removeItem('x_token');
             localStorage.removeItem('x_key');
-            Helper.sendSession('unauthorized', {});
+            Helper.setView('login', false, null);
         });
     },
 
@@ -279,13 +301,18 @@ var Helper = {
         });
     },
 
-    setView: (view) => {
-        Helper.view = view;
+    setView: (view, isPage, data) => {
+        let newTemplate = view;
+        Helper.state._prevActiveTabName = Helper.state.activeTabName;
+        Helper.state.activeTabName = view;
+        if (isPage) {
+            newTemplate += 'Page';
+        }
+        Helper.state.currentViewData = data;
+        Helper.state.currentViewTemplate = VIEW_FOLDER + newTemplate + '.html';
+        Helper.sendSession('state', Helper.state);
+        return Helper.state;
     },
-
-    getView: () => {
-        return Helper.view;
-    }
 };
 
 

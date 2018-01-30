@@ -31,17 +31,9 @@ angular
             }
         }, true);
 
-        $scope.$watch('interface.useVideo', function (val) {
-            if (!$scope.interface)
-                return;
-
-            if ($scope.devices && $scope.devices.videoDevices && $scope.devices.videoDevices.length > 0) {
-                $scope.interface.useVideo = val;
-            } else {
-                $scope.interface.useVideo = false;
-            }
-        });
-
+        $scope.logout = () => {
+            Helper.logout();
+        };
 
         $scope.theme = localStorage.getItem("theme") || "";
 
@@ -58,21 +50,6 @@ angular
             {
                 name: "Light",
                 class: "light"
-            }
-        ];
-
-        $scope.autoAnswerParams = [
-            {
-                label: "Off",
-                id: "false"
-            },
-            {
-                label: "Always",
-                id: "all"
-            },
-            {
-                label: "Variable",
-                id: "var"
             }
         ];
     }]);

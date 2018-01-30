@@ -40,36 +40,29 @@ vertoPhone.constant('Tabs', {
 });
 
 vertoPhone.run(function($rootScope, $window, CallService, $timeout) {
-    $rootScope.currentViewTemplate = 'init';// Helper.getView();
+    $rootScope.currentViewTemplate = "";
     $rootScope.session = Helper.getSession();
     $rootScope.isActiveChangeStatus = false;
     $rootScope.activeCalls = Helper.getActiveCalls();
-    $rootScope.activeCall = null;
-
-//    angular.forEach(Helper.session.activeCalls, i => $rootScope.activeCalls.push(i));
-
-    function setCurrentViewTemplate(view) {
-        $rootScope.currentViewTemplate = view;
-        Helper.setView(view);
-    }
-
-    $rootScope.showChangeStatusPage = () => $rootScope.isActiveChangeStatus = true;
-
-    $rootScope._theme = localStorage.getItem("theme") || "dark";
-    localStorage.setItem("theme", $rootScope._theme);
-
-    $rootScope.errors = [];
-    $rootScope.addError = function (msg, time) {
-        var err = new Error(msg);
-        $rootScope.errors.push(err);
-        if (time) {
-            $timeout(function() {
-                $rootScope.closeError(err);
-            }, time)
-        }
-    };
-
+    $rootScope.activeCall = Helper.getActiveCall();
     $rootScope.search = '';
+
+    updateState(Helper.state);
+
+    $rootScope.$on('bg:state', (e, state) => {
+        updateState(state)
+    });
+
+    $rootScope.$on('bg:onMyStatusChange', function (e, data) {
+        console.debug(data);
+        $rootScope.webitelUser = data;
+        $rootScope.$apply();
+    });
+
+    $rootScope.$on('bg:onNewOutboundCall', () => {
+        $rootScope.search = '';
+    });
+
     $rootScope.makeCall = function (number) {
         if (!number)
             return;
@@ -85,19 +78,32 @@ vertoPhone.run(function($rootScope, $window, CallService, $timeout) {
         }
     };
 
-    $rootScope.loggedIn = !!Helper.getSession();
-    $rootScope.serverEngine = localStorage.getItem('serverEngine');
-    $rootScope.iceServers = localStorage.getItem('iceServers');
+    $rootScope.showChangeStatusPage = () => $rootScope.isActiveChangeStatus = true;
 
-    function setLoginPage() {
-        document.title = "Login";
+    $rootScope._theme = localStorage.getItem("theme") || "dark";
+    localStorage.setItem("theme", $rootScope._theme);
+
+    $rootScope.changeState = (view, isPage, data) => {
+        Helper.setView(view, isPage, data);
+    };
+
+    function updateState(state = {}) {
+        $rootScope.currentViewTemplate = state.currentViewTemplate;
+        $rootScope.activeTabName = state.activeTabName;
+        $rootScope.isLoged = $rootScope.loggedIn = !!Helper.getSession();
         $rootScope.serverEngine = localStorage.getItem('serverEngine');
-        $rootScope.iceServers = localStorage.getItem('iceServers');
 
-        $rootScope.isLoged = false;
-        $rootScope.changeState('login', false);
+        if (Helper.session) {
+            window.vertoSession = Helper.session;
+            $rootScope.session = Helper.session;
+            document.title = $rootScope.webitelUser = Helper.session.webitelUser;
+        } else {
+            //TODO
+        }
+
         $rootScope.$apply();
     }
+
 
     $rootScope.login = function (login, password, serverEngine, iceServers) {
         $rootScope.sendBg('login', {
@@ -106,118 +112,6 @@ vertoPhone.run(function($rootScope, $window, CallService, $timeout) {
             serverEngine,
             iceServers
         });
-        changeState('init', false)
-    };
-
-    $rootScope.$on('bg:onMyStatusChange', function (e, data) {
-        console.debug(data);
-        $rootScope.webitelUser = data;
-        $rootScope.$apply();
-    });
-
-    $rootScope.$on('bg:unauthorized', function (e, data) {
-        setLoginPage()
-    });
-
-    $rootScope.$on('bg:logout', () => {
-        setLoginPage()
-    });
-
-    $rootScope.$on('bg:onNewOutboundCall', () => {
-        $rootScope.search = '';
-    });
-
-    $rootScope.$on('bg:init', function (e, data) {
-        console.warn(data);
-        if (data.tabName) {
-            setLoginPage()
-        }
-    });
-    $rootScope.$on('bg:changeCall', function (e, data) {
-        console.log(data);
-        setActiveCall(data);
-    });
-    
-    $rootScope.setViewCall = function (call) {
-        //$rootScope.activeCall = call;
-
-        //
-        call.isView = true;
-        // CallService.setViewCall(call.id, true);
-        angular.forEach($rootScope.activeCalls, c => {
-            CallService.setViewCall(c.id, c.id === call.id);
-        });
-
-        //
-
-        //
-
-        if (call.state === 'held') {
-            CallService.unholdCall(call.id)
-        } else if (call.state === 'newCall') {
-            if ($rootScope.activeCall && $rootScope.activeCall.state === 'active') {
-                CallService.holdCall($rootScope.activeCall.id);
-            }
-        }
-        $rootScope.activeCall = call;
-        setCallView();
-
-    };
-
-    function setCallView() {
-        setCurrentViewTemplate('app/view/call.html');
-    }
-
-    function setActiveCall(data) {
-        $rootScope.activeCalls = [];
-        $rootScope.activeCall = null;
-
-        for (var key in data) {
-            var call = data[key];
-            $rootScope.activeCalls.push(call);
-            if (call.isView) {
-               $rootScope.activeCall = call;
-            }
-        }
-
-        if (!$rootScope.activeCall && $rootScope.activeCalls.length > 0) {
-            $rootScope.activeCall = $rootScope.activeCalls[0]
-        }
-
-        if ($rootScope.activeCalls.length > 0) {
-            setCallView()
-        } else {
-            changeState($rootScope.activeTabName !== 'call' && $rootScope.activeTabName !== 'settings'
-                ? $rootScope.activeTabName
-                : 'history');
-        }
-        $timeout(() => {
-            $rootScope.$apply()
-        })
-    }
-
-    $rootScope.activeTabName = 'login';
-
-    if (!$rootScope.inCall)
-        changeState($rootScope.activeTabName);
-
-    $rootScope.changeState = changeState;
-
-    function changeState(stateName, isPage, data) {
-        if (!$rootScope.isLoged && stateName !== 'init') {
-            stateName = 'login';
-        }
-
-        var newTemplate = stateName;
-        
-        $rootScope._prevActiveTabName = $rootScope.activeTabName;
-        $rootScope.activeTabName = stateName;
-        if (isPage) {
-            newTemplate += 'Page'
-        }
-        $rootScope.currentViewData = data;
-        setCurrentViewTemplate('app/view/' + newTemplate + '.html');
-
     };
 
     $window.onkeydown = function (e) {
@@ -225,26 +119,28 @@ vertoPhone.run(function($rootScope, $window, CallService, $timeout) {
         return e.stopPropagation()
     };
 
-    function init(e, data) {
-        window.vertoSession = Helper.session;
-        $rootScope.session = Helper.session;
-        if (data.success) {
-            document.title = data.name;
-            $rootScope.webitelUser = Helper.session.webitelUser;
-            $rootScope.useVideo = Helper.session.useVideo;
-            $rootScope.isLoged = true;
-            $rootScope.changeState('history', false);
-        } else {
-            //todo notification
-            setLoginPage()
+    $rootScope.$on('bg:changeCall', function (e, data) {
+        $rootScope.activeCall = Helper.getActiveCall();
+        $rootScope.activeCalls = Helper.getActiveCalls();
+        $rootScope.$apply();
+    });
+
+    $rootScope.setViewCall = function (call) {
+        CallService.setViewCall(call.id, true);
+    };
+
+    $rootScope.errors = [];
+    $rootScope.addError = function (msg, time) {
+        var err = new Error(msg);
+        $rootScope.errors.push(err);
+        if (time) {
+            $timeout(function() {
+                $rootScope.closeError(err);
+            }, time)
         }
-    }
+    };
 
-    if (Helper.session) {
-        init(null, {success: true})
-    }
-
-    $rootScope.$on('bg:onWSLogin', init);
+    return;
 });
 
 vertoPhone.directive('uiToggle', function () {

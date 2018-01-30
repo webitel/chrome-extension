@@ -185,11 +185,6 @@ class Call {
         }
     }
 
-    hangupScreen () {
-        if (this.screenShareCall && Helper.session.verto.dialogs[this.screenShareCall])
-            return Helper.session.verto.dialogs[this.screenShareCall].hangup();
-    }
-
     showNewCall () {
         const session = Helper.session;
         Helper.focus();

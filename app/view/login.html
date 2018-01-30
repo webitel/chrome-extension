@@ -9,14 +9,11 @@
             <input ng-model="auth.login" type="text" id="settingsLogin" placeholder="login">
             <input ng-model="auth.password" type="password" id="settingsPassword" placeholder="password">
             <input ng-model="serverEngine" type="text" class="small-placeholder" id="settingsServerEngine" placeholder="wss://webitel.com/engine/">
-            <li class="table-view-cell" style="border: 0;">
-                Use STUN
-                <div ui-toggle ng-model="iceServers"></div>
-            </li>
+
             <button ng-click="login(auth.login, auth.password, serverEngine, iceServers)" type="submit" class="btn btn-positive">Login</button>
         </form>
     </div>
     <div>
-        <span  style="color: rgba(255, 255, 255, 0.41); font-size: 10px; position: absolute; bottom: 5px; left: 17px;">Ver: {{version}}</span>
+        <span  style="color: rgba(255, 255, 255, 0.41); font-size: 10px; position: absolute; bottom: 5px; left: 17px;">Ver: 0.0.1</span>
     </div>
 </div>

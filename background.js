@@ -78,7 +78,8 @@ class Extension {
     }
 
     makeCall (number) {
-
+        //TODO
+        Helper.session.makeCall(number);
     }
 
     hangupCall () {

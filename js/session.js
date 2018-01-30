@@ -227,15 +227,20 @@ class Session {
 
         this.services = {
             cdr: new CDR(this)
-        }
+        };
+
+        //TODO
+        setTimeout(() => {
+            Helper.setView('history', false, null);
+        }, 10);
     }
 
     getService(name) {
 	    return this.services[name];
     }
 
-    setActiveCall(call) {
-        this.activeCall = call;
+    setActiveCall(uuid) {
+        this.activeCall = uuid;
     }
 
     getActiveCall() {
@@ -480,28 +485,6 @@ class Session {
         return this.lastCallNumber || "";
     }
 
-    sendLoginToExtension () {
-        if (Helper.extensionPort && this.isLogin) {
-            Helper.extensionPort.postMessage({
-                action: "login",
-                data: {}
-            });
-        }
-    }
-
-    sendLogoutToExtension() {
-        if (Helper.extensionPort && this.isLogin) {
-            Helper.extensionPort.postMessage({
-                action: "logout",
-                data: {}
-            });
-        }
-    }
-
-    refreshDevicesList () {
-        $.verto.init({skipPermCheck: true}, ()=> {});
-    }
-
     getDevicesList () {
         return {
             audioInDevices: $.verto.audioInDevices,
@@ -602,6 +585,9 @@ class Session {
         const call = this.activeCalls[id];
         if (call) {
             call.setView(isView);
+            this.setActiveCall(id);
+            Helper.sendSession('changeCall', this.activeCalls);
+            Helper.setView('call', false, null);
         }
     }
 
