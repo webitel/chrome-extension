@@ -1,0 +1,18 @@
+<div class="chat" ng-controller="chatPageCtrl">
+    <div class="chat-data">
+
+        <section>
+            <div ng-repeat-start="c in data" class="{{c.direction == 'inbound' ? 'from-me' : 'from-them'}}">
+                <p>{{c.body}}</p>
+            </div>
+            <div ng-repeat-end class="clear"></div>
+
+        </section>
+
+    </div>
+
+    <div class="bar bar-standard bar-footer-secondary chat-action">
+        <input type="text">
+    </div>
+
+</div>

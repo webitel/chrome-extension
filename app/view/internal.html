@@ -1,0 +1,29 @@
+<div class="content" ng-controller="internalCtrl">
+
+    <table class="table">
+        <tbody>
+        <tr id="agent-{{c.id}}" color-status="{{c.stateName}}" ng-repeat-start="c in data | orderBy:'orderBy' | filter:search" class="internal-list">
+            <td style="width: 100%;"><a class="user-info" ng-click="makeCall(c.id)">{{c.id}} ({{c.name}})</a><span style="margin-left: 5px;" ng-class="c.away" class="agent-away-img"></span> <span class="agent-away">{{c.tag}}</span></td>
+
+            <td style="width: 30px; text-align: right;">
+
+                <button ng-show="myId != c.id && c.state === 'ONHOOK' && activeCall.state === 'active'" style="font-size: 10px; border: 0;" ng-click="eavesdropCall(myId, null, c.id, activeCall.id)" class="btn btn-link pull-right icon ion-person-add"></button>
+
+                <button ng-show="myId != c.id && c.state === 'ISBUSY' && c.away=== 'NONE'" style="font-size: 10px; border: 0;" ng-click="showDetail(c)" ng-class="{'ion-ios-arrow-right': !c.showDetail, 'ion-ios-arrow-up': c.showDetail}" class="btn btn-link pull-right icon icon-pages"></button>
+                <!--<a ng-click="makeCall(c.id)" style="border: 0" class="btn btn-link  history-make-call">-->
+                <!--</a>-->
+                <!--<a ng-click="makeCall(c.id)" style="border: 0" class="btn btn-link  history-make-call">-->
+                <!--</a>-->
+            </td>
+        </tr>
+        <tr color-status="{{c.stateName}}" class="internal-list" ng-show="c.showDetail" ng-repeat-end="">
+            <td colspan="2">
+                <div ng-repeat="chan in c.channels">
+                    <span>{{chan.dest}} <a ng-click="eavesdropCall(c.id, chan.dest, null, chan.uuid)" style="border: 0; margin-top: 4px;" class="btn btn-link  eavesdrop-img"></a></span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

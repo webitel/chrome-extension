@@ -1,0 +1,39 @@
+<div class="modal" ng-class="{'active': isActiveChangeStatus}" ng-controller="changeStatus">
+    <header class="bar bar-nav">
+        <a ng-click="close()" class="icon icon-close pull-right"></a>
+        <h1 class="title">Set new state</h1>
+    </header>
+
+    <div class="content">
+
+        <div  class="form">
+            <form style="padding: 5px;">
+                <h4>Status</h4>
+
+
+                <select class="auto-answer pull-right" ng-model="status" ng-options="item.id as item.label for item in userStatus">
+                </select>
+
+                <div ng-show="getStatuses(status).states.length > 0">
+                    <h4>State</h4>
+                    <select class="auto-answer pull-right" ng-model="state" ng-options="item.id as item.label for item in getStatuses(status).states">
+                        <!--oRDER BY ...-->
+                    </select>
+
+                    <div ng-show="getStatuses(status).descript">
+                        <h4>{{state === 'CALLFORWARD' ? 'Number' : 'Description' }}</h4>
+                        <textarea ng-model="descript" rows="3"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <button style="width: 100%;" ng-click="setNewState(status, state, descript)" class="btn btn-positive">Choose state</button>
+
+        <!--Status-->
+        <!--<select class="auto-answer pull-right ng-pristine ng-valid ng-not-empty ng-touched" ng-model="interface.autoAnswer" ng-options="item.id as item.label for item in autoAnswerParams"><option label="Off" value="string:false" selected="selected">Off</option><option label="Always" value="string:all">Always</option><option label="Variable" value="string:var">Variable</option></select>-->
+
+        <!--State-->
+        <!--<select class="auto-answer pull-right ng-pristine ng-valid ng-not-empty ng-touched" ng-model="interface.autoAnswer" ng-options="item.id as item.label for item in autoAnswerParams"><option label="Off" value="string:false" selected="selected">Off</option><option label="Always" value="string:all">Always</option><option label="Variable" value="string:var">Variable</option></select>-->
+    </div>
+</div>

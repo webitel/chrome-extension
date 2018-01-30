@@ -1,0 +1,1165 @@
+/*APPLICATION*/
+.change-status-page {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+#phone.app, #phone.app .icon {
+    font-family: "Exo 2", "Ratchicons";
+}
+
+#phone.app .title {
+    color: rgb(214, 214, 215);
+}
+
+.in-call-center svg {
+    width: 13px;
+}
+
+.signal {
+    margin: 9px 0px;
+    padding: 0px;
+    display: flex;
+    width: 30px;
+}
+
+.signal > span {
+    display: inline-block;
+    border-radius: 5px;
+    width: 5px;
+    height: 5px;
+    border: double 1px #333239;
+    margin: 0px 1px;
+}
+
+#phone.app.dark .signal > span {
+    border: solid 1px #f7f7f7;
+}
+#phone.app.dark .signal > span.active {
+    background: #f7f7f7;
+}
+
+.signal > span.active {
+    background: #333239;
+    z-index: 3;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+	width: 250px;
+	height: 500px;
+}
+
+input[placeholder] {
+    text-overflow:ellipsis;
+}
+
+input[placeholder].small-placeholder::-webkit-input-placeholder{
+    font-size: 11px;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+    /*border-radius: 2px;*/
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #929292;
+    /*border-radius: 4px;*/
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);*/
+}
+
+table.table {
+    /*border-collapse: collapse;*/
+    width: 100%;
+}
+
+table tbody {
+    vertical-align: top;
+}
+
+.table th, .table td {
+    text-align: left;
+    padding: 3px;
+    /*font-size: 10px;*/
+    word-break: break-word;
+}
+
+/*.table tr:nth-child(even){background-color: #f2f2f2}*/
+
+/*.table th {*/
+/*background-color: #4CAF50;*/
+/*color: white;*/
+/*}*/
+
+.in-call-center-img {
+    content:url("../images/svg/in_call_center.svg");
+}
+
+.inbound-error-call-img {
+    content:url("../images/svg/inbound_error.svg")
+}
+
+.inbound-ok-call-img {
+    content:url("../images/svg/inbound_ok.svg")
+}
+
+.inbound-queue-call-img {
+    content:url("../images/svg/inbound_queue.svg")
+}
+
+.missed-call-img {
+    content:url("../images/svg/missed.svg")
+}
+
+.outbound-error-call-img {
+    content:url("../images/svg/outbound_error.svg")
+}
+
+.outbound-ok-call-img {
+    content:url("../images/svg/outbound_ok.svg")
+}
+
+
+.unknown-call-img {
+    content:url("../images/svg/unknown.svg")
+}
+
+.recording-call-img {
+    content:url("../images/svg/recording.svg")
+}
+
+.internal-call-img {
+    content:url("../images/svg/internal.svg")
+}
+
+.conference-call-img {
+    content:url("../images/svg/conference.svg")
+}
+.file-json {
+    background: url(../images/svg/json.svg) no-repeat;
+    background-size: 16px 14px;
+    /*TODO*/
+    height: 15px;
+    padding-right: 11px;
+    /*content:url("../images/svg/json.svg")*/
+}
+
+.att-x-fer-call-img {
+    content:url("../images/svg/att_x_fer.svg");
+    border: 0;
+    width: 33px;
+    height: 33px;
+}
+
+.application-pdf-file:before {
+    /*content:url("../images/svg/pdf.svg")*/
+    content:"PDF";
+    color: #f39c12;
+}
+.audio-wav-file:before {
+    /*content:url("../images/svg/wav.svg")*/
+    content:"WAV";
+    color: #57c17b;
+}
+.audio-mp3-file:before {
+    /*content:url("../images/svg/mp3.svg");*/
+    content:"MP3";
+    color: #57c17b;
+}
+
+.history-file-img {
+    width: 20px;
+    height: 20px;
+}
+
+.history-detail-data {
+    margin-bottom: 5px;
+    font-size: 12px;
+    /*color: #000;*/
+}
+
+#phone .settings .settings-segmented {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#phone .content {
+    padding: 3px;
+}
+
+audio {
+    width: 100%;
+    -webkit-transition:all 0.5s linear;
+    -moz-transition:all 0.5s linear;
+    -o-transition:all 0.5s linear;
+    transition:all 0.5s linear;
+    -moz-border-radius:7px 7px 7px 7px ;
+    -webkit-border-radius:7px 7px 7px 7px ;
+    border-radius:7px 7px 7px 7px ;
+}
+
+
+#phone .content.history table tr.history-group {
+    background-color: #f7f7f7;
+    border-bottom-width: 1px;
+    border-bottom-style: inset;
+    /*border-bottom-color: rgba(0, 0, 0, 0.19);*/
+    cursor: pointer;
+}
+
+#phone .content.history .call-info-img, #phone .content.history .call-info-img img {
+    vertical-align: middle;
+    text-align: center;
+    width: 20px;
+    max-width: 24px;
+    height: 20px;
+    padding: 0;
+}
+
+#phone .login-page {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #28262c;
+}
+
+
+#phone .upgrade-page {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #28262c;
+    color: #fffaed;
+    text-align: center;
+}
+#phone .upgrade-page .upgrade-header {
+    padding-top: 30px;
+}
+
+#phone .upgrade-page .upgrade-process {
+    padding-top: 50px;
+}
+
+
+#phone .upgrade-page .upgrade-error {
+    padding-top: 50px;
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+}
+
+
+#phone .login-page .signin-header {
+    margin-top: 60px;
+}
+#phone .login-page .signin-header .logo {
+    text-transform: uppercase;
+    color: #fffaed;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+#phone .login-page .signin-header button {
+    width: 100%;
+}
+
+#phone .login-page .signin-header .signin-form {
+    margin-top: 10px;
+    padding: 20px;
+}
+#phone .login-page .signin-header .signin-form li.table-view-cell {
+    color: #fff;
+}
+
+/*SPINNER*/
+
+.bg-spinner {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+    background-color: rgba(0, 0, 0, 0.57);
+}
+
+.spinner-wrap {
+    /*margin: auto;*/
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+}
+
+.spinner {
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    margin: -50px auto 0;
+    animation: spin 1s steps(12, end) infinite;
+}
+.spinner:first-child {
+    /*margin-right: 50px;*/
+}
+.spinner i {
+    height: 30px;
+    width: 6px;
+    margin-left: -3px;
+    display: block;
+    transition: height 1s;
+    position: absolute;
+    left: 50%;
+    transform-origin: center 50px;
+    background: #fff;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+    border-radius: 3px;
+}
+.spinner:nth-child(2) i {
+    height: 6px;
+}
+.spinner:hover i {
+    height: 6px;
+}
+.spinner:hover:nth-child(2) i {
+    height: 30px;
+}
+
+.spinner i:nth-child(1) {
+    opacity: 0.08;
+}
+
+.spinner i:nth-child(2) {
+    transform: rotate(30deg);
+    opacity: 0.167;
+}
+
+.spinner i:nth-child(3) {
+    transform: rotate(60deg);
+    opacity: 0.25;
+}
+
+.spinner i:nth-child(4) {
+    transform: rotate(90deg);
+    opacity: 0.33;
+}
+
+.spinner i:nth-child(5) {
+    transform: rotate(120deg);
+    opacity: 0.4167;
+}
+
+.spinner i:nth-child(6) {
+    transform: rotate(150deg);
+    opacity: 0.5;
+}
+
+.spinner i:nth-child(7) {
+    transform: rotate(180deg);
+    opacity: 0.583;
+}
+
+.spinner i:nth-child(8) {
+    transform: rotate(210deg);
+    opacity: 0.67;
+}
+
+.spinner i:nth-child(9) {
+    transform: rotate(240deg);
+    opacity: 0.75;
+}
+
+.spinner i:nth-child(10) {
+    transform: rotate(270deg);
+    opacity: 0.833;
+}
+
+.spinner i:nth-child(11) {
+    transform: rotate(300deg);
+    opacity: 0.9167;
+}
+
+.spinner i:nth-child(12) {
+    transform: rotate(330deg);
+    opacity: 1;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+/**/
+
+.text-center {
+    text-align: center;
+}
+
+#phone .error{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+
+#phone .input-control {
+    border-radius: 0;
+    margin-top: 5px;
+}
+
+#phone .input-control>input {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+#phone .input-control>.video-call-btn {
+    font-size: 12px;
+}
+
+#phone .bar.bar-nav.bar-my-status {
+}
+
+#phone header.bar {
+    height: 84px;
+}
+
+#phone .bar {
+    -webkit-box-shadow: 0 0 0px rgba(0,0,0,.85);
+    box-shadow: 0 0 0px rgba(0,0,0,.85);
+}
+
+#phone .bar.bar-tab {
+    cursor: pointer;
+    z-index: 12;
+}
+
+#phone .bar.bar-nav.bar-my-status .bottom-info {
+    position: absolute;
+    top: 0;
+    font-size: 10px;
+    /*font-weight: bold;*/
+    padding: 0;
+    margin: 0px 0 -5px 0;
+    z-index: 100;
+    display: flex;
+}
+
+#phone .bar.bar-nav.bar-my-status .bottom-info>.my-state-name {
+    cursor: pointer;
+}
+
+#phone .bar.bar-nav.bar-my-status .bottom-info.bottom-info-left {
+    right: 10px;
+}
+#phone .bar.bar-nav.bar-my-status .bottom-info.bottom-info-left > .in-call-center {
+    width: 20px;
+    height: 18px;
+    padding-top: 3px;
+}
+
+#phone .internal-list {
+    border-left-width: 5px;
+    border-left-style: solid;
+}
+#phone table tr.internal-list td {
+    font-size: 12px;
+}
+
+#phone .internal-list .agent-away {
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 69px;
+}
+
+#phone .internal-list .agent-away-img {
+    padding-left: 21px;
+}
+
+#phone .internal-list .user-info {
+    cursor: pointer;
+    color: #000;;
+}
+
+#phone.app.dark .internal-list .user-info {
+    color: #fff;;
+}
+
+#phone .internal-list .eavesdrop-img {
+    background: url(../images/svg/eavesdrop.svg) no-repeat;
+    color: #4f6bc8;
+    background-size: 16px 14px;
+}
+#phone .ok-img {
+    background: url(../images/svg/ok.svg) no-repeat;
+    color: #4f6bc8;
+    background-size: 48px 48px;
+}
+
+#phone .internal-list .agent-away-img.CALLFORWARD {
+    background: url(../images/svg/call-forward.svg) no-repeat;
+    background-size: 16px 14px;
+}
+
+#phone .internal-list .agent-away-img.DND {
+    background: url(../images/svg/call_dnd.svg) no-repeat;
+    background-size: 16px 14px;
+}
+#phone .internal-list .agent-away-img.ONBREAK {
+    background: url(../images/svg/call_on_break.svg) no-repeat;
+    background-size: 16px 14px;
+}
+
+#phone .internal-list .agent-away-img.VOICEMAIL {
+    background: url(../images/svg/call-vm.svg) no-repeat;
+    background-size: 16px 14px;
+}
+
+#phone .internal-list .agent-away-img.AGENT {
+    background: url(../images/svg/inbound_queue.svg) no-repeat;
+    background-size: 16px 14px;
+}
+
+
+#phone .bar-my-status .bottom-info [color-status="state-waiting"] {
+    color: #57c17b;
+}
+#phone .bar-my-status .bottom-info [color-status="state-no-reg"] {
+    color: rgba(171, 171, 171, 0.36);
+}
+#phone .bar-my-status .bottom-info [color-status="state-on-break"] {
+    color: #f39c12;
+}
+#phone .bar-my-status .bottom-info [color-status="state-busy"] {
+    color: #bf4048;
+}
+
+
+#phone .internal-list[color-status="state-waiting"] {
+    border-left-color: #57c17b;
+}
+
+#phone .internal-list[color-status="state-no-reg"] {
+    border-left-color: rgba(171, 171, 171, 0.36);
+}
+
+#phone .internal-list[color-status="state-on-break"] {
+    border-left-color: #f39c12;
+}
+#phone .internal-list[color-status="state-busy"] {
+    border-left-color: #bf4048;
+}
+
+#phone .call-view-number {
+    max-width: 200px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: copy;
+}
+
+
+#phone .error .error-msg{
+    background-color: red;
+    color: #fff;
+    padding-left: 3px;
+    margin: 3px;
+    cursor: pointer;
+}
+
+#phone .call-group .btn.circle-btn.icon.ion-ios-videocam.call.make-call-video {
+    display: none;
+    position: absolute;
+    top: 6px;
+    margin-left: 6px;
+}
+
+#phone .form-group {
+    display: flex;
+    text-align: center;
+}
+
+#phone .form-group select{
+    margin: 5px;
+}
+
+#phone .form-group span {
+    font-size: 50px;
+    width: 60px
+}
+
+#phone .form-group.contact span {
+    font-size: 24px;
+    width: 32px;
+    padding-top: 4px;
+}
+
+/*#phone .call-group:hover .btn.circle-btn.icon.ion-ios-videocam.call.make-call-video:hover {*/
+/*display: inline;*/
+/*}*/
+
+#phone.app .dialpad.call-group {
+    height: 66px;
+}
+
+#phone .dialpad.call-group:hover .btn.circle-btn.icon.ion-ios-videocam.call.make-call-video {
+    display: inline-block;;
+}
+
+#phone .btn.circle-btn:focus {
+    outline:0;
+}
+
+#phone .no-border {
+    border: 0;
+}
+
+#phone form {
+    /*margin: 10px;*/
+}
+
+#phone .content {
+    top: 84px;
+    bottom: 50px;
+}
+
+#phone .default-text {
+    color: rgba(17, 26, 35, 0.69);
+}
+
+#phone .dialpad-form .dialpad-input {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+#phone .dialpad-form .dialpad-input a {
+    font-size: 18px;
+    margin-top: 4px;
+}
+
+#phone .call {
+    text-align: center;
+    font-size: 28px;
+}
+
+#phone .table-view.tab-content {
+    position: fixed;
+    top: 69px;
+    overflow-y: auto;
+    bottom: 35px;
+    width: 100%;
+    font-size: 12px;
+}
+
+#phone .table-view.tab-content li{
+    padding: 9px;
+}
+
+#phone .content .card-call video {
+    width: 100%;
+    height: 110px;
+}
+
+#phone .bg-default {
+    background-color: rgba(247, 247, 247, .98);
+}
+
+#phone.app .content .card-call-footer .btn.call.make-call, #phone.app.dark .content .card-call-footer .btn.call.make-call {
+    color: #fff;
+    background-color: #4cd964;
+}
+
+#phone .btn {
+    outline: 0;
+}
+
+#phone.app .content .card-call-footer .btn.hangup-call, #phone.app.dark .content .card-call-footer .btn.hangup-call {
+    color: #fff;
+    background-color: #cf2d28;
+    /* Safari */
+    -webkit-transform: rotate(134deg);
+
+    /* Firefox */
+    -moz-transform: rotate(134deg);
+
+    /* IE */
+    -ms-transform: rotate(134deg);
+
+    /* Opera */
+    -o-transform: rotate(134deg);
+
+}
+
+#phone .bar .segmented-control {
+    width: 100%;
+    border: 0;
+}
+
+#phone ul>li>a:not(:first-child) {
+    margin-left: 10px;
+}
+
+#phone.app {
+    /*display: none;*/
+}
+#phone.app.loaded {
+    display: block;
+}
+
+
+#phone.app p {
+    color: #929292;
+}
+
+#phone.app header.bar.bar-nav .control-item.header-call-item {
+    cursor: pointer;
+}
+
+/*DARK*/
+
+#phone.app.dark .in-call-center > svg path {
+    fill: #fff;
+}
+
+#phone.app.dark .bar {
+    background-color: #34323a;
+}
+
+#phone.app .bar {
+    background-color: #f7f7f7;
+}
+
+#phone.app.dark p {
+    color: #f7f7f7;
+}
+#phone.app.dark .bar.bar-nav.bar-my-status .bottom-info.bottom-info-left {
+    color: #fff;
+}
+
+#phone.app.dark .input-control>input {
+    background-color: rgba(0, 0, 0, 0.18);
+    color: #fff;
+}
+
+#phone.app.dark .content {
+    background-color: rgba(52, 50, 58, 0.98);
+    color: #fff;
+}
+
+#phone.app.dark .content.history table tr.history-group {
+    background-color: #222127;
+}
+
+#phone.app.dark .table-view {
+    background-color: rgba(52, 50, 58, 0.98);
+}
+
+#phone.app.dark .card {
+    background-color: rgba(52, 50, 58, 0.98);
+}
+#phone.app.dark select, #phone.app.dark input, #phone.app.dark textarea {
+    /*color: #34323a;*/
+    background-color: #2b2930;
+    color: #fff;
+}
+
+#phone.app.dark .btn.btn-positive {
+    color: #fff;
+    /*background-color: #4cd964;*/
+    border: 1px solid #4cd964;
+}
+
+#phone.app.dark .content .card-call .btn, #phone.app.dark .content .card-call-footer .btn {
+    background-color: rgb(51, 50, 57);
+    border: 1px solid #29272f;
+}
+
+#phone.app.dark .content .card-call .btn.active, #phone.app.dark .content .card-call .btn:active {
+    /*color: #fff;*/
+    /*background-color: #4e4d50;*/
+}
+
+#phone.app.dark audio::-webkit-media-controls-panel {
+    background-color: rgba(52, 50, 58, 0.98);
+}
+#phone.app.dark audio::-webkit-media-controls-play-button {
+    color: #4cd964;
+}
+
+/*END DARK*/
+
+#phone.app .content.history table tr td {
+    font-size: 10px;
+}
+
+
+#phone .header-call-item {
+    position: relative;
+    height: 27px;
+}
+
+#phone .header-call-item .header-call-number {
+    overflow: hidden;
+    width: 100%;
+    position: absolute;
+    margin: 0px 2px 0px;;
+    padding: 0;
+    height: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#phone .color-success {
+    color: #4cd964;
+}
+#phone .color-danger {
+    color: #cf2d28;
+}
+#phone .color-default {
+    color: rgba(17, 26, 35, 0.69)
+}
+
+.make-call-img {
+    /*content:url("../images/svg/make-call.svg")*/
+}
+
+#phone .history-make-call {
+    background: url(../images/svg/make-call.svg) no-repeat;
+    background-size: 16px 14px;
+    width: 16px;
+    height: 14px;
+}
+
+#phone.app .content.history table thead>tr {
+    padding: 0;
+    border: 0;
+}
+
+#phone.app .content.history table thead>tr>th {
+    font-size: 9px;
+}
+#phone.app .content.history table thead>tr>th>button {
+    font-size: 17px;
+    padding: 0;
+    margin: 0;
+}
+
+#phone .card.card-settings {
+    font-size: 15px;
+    margin: 0;
+}
+
+#phone .card.card-settings .auto-answer {
+    text-align-last: center;
+    width: 51px;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    right: 14px;
+}
+
+#phone .card.card-settings input {
+    height: 33px;
+    margin-bottom: 10px;
+}
+#phone li {
+    list-style: none;
+}
+
+#phone .dialpad > li {
+    width: 100%;
+    text-align: center;
+}
+
+#phone #dialpad .call-btn-group {
+    padding: 0;
+    display: table;
+    margin: 0 auto;
+    position: relative;
+}
+
+#phone #dialpad form {
+    height: 279px;
+}
+
+#phone.app .table-view {
+    background-color: #f7f7f7;
+}
+
+#phone.app .content .card-call .dlr-post-data li {
+    background-image: none;
+    background-position: 0px 100%;
+    padding: 11px 0px 11px 0px;
+}
+
+#phone.app .content .card-call li.webitel-data {
+    /*text-align: left;*/
+    /*line-height: 20px;*/
+    /*position: absolute;*/
+    /*bottom: 125px;*/
+    /*top: 112px;*/
+    /*max-height: 100%;*/
+    /*right: 0;*/
+}
+#phone.app .content .card-call li.webitel-data>div {
+    overflow: auto;
+    height: 100%;
+}
+
+#phone.app .content .card-call li.webitel-data>div>p {
+    margin: 0;
+}
+
+#phone .content .card-call table.table.table-call-action tr  {
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+#phone .content .card-call table.table.table-call-action td  {
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+}
+
+#phone .content .card-call table.table.table-call-action td.action  {
+    width: 40px;
+}
+
+
+#phone .content .card-call .post-process p {
+    margin-bottom: 0;
+}
+#phone .content .card-call .post-process {
+    padding: 5px;
+}
+
+#phone .content .card-call .post-process textarea {
+    margin-bottom: 0;
+    padding: 0px 15px;
+}
+
+#phone .content .card-call .post-process ul.call-rating {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+#phone .content .card-call .post-process ul.call-rating li {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 20px;
+    list-style-type: none;
+}
+
+
+
+.call-star,
+.call-rating:not(.vote-cast):hover .call-star:hover ~ .call-star,
+.call-rating.vote-cast .call-star.selected ~ .call-star
+{
+    /* normal state */
+    color: black;
+}
+
+.call-rating:hover .call-star,
+.call-rating.vote-cast .call-star
+{
+    /* highlighted state */
+    color: red;
+}
+
+#phone .content .card-call {
+    background-color: #f7f7f7;
+}
+
+#phone.app.dark .content.call-content {
+    background-color: rgb(52, 50, 59);
+}
+
+#phone .content .card-call-info {
+    text-align: center;
+    margin-top: 5px;
+}
+
+
+#phone .content .card-call-footer {
+    margin: 0;
+}
+
+#phone .content .card-call-footer .card-call-btn-close {
+    position: absolute;
+    right: 15px;
+    top: 28px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+.content .input-number {
+    width: 79%;
+    background-color: transparent;
+    border: 0;
+    text-align: center;
+}
+
+.content .input-number-btn {
+    padding-top: 7px;
+}
+.circle-btn {
+    width: 50px;
+    height: 50px;
+    margin: 3px;
+    font-size: 24px;
+    /*line-height: 50px;*/
+    text-align: center;
+    border: 1px solid #d0d0d0;
+    border-radius: 25px;
+}
+
+
+
+.bg-success {
+    background-color: #4cd964;
+    color: #fff;
+}
+
+.bg-danger {
+    background-color: #f39c12;
+}
+
+.dialpad {
+    margin: 0 auto;
+    padding: 0;
+}
+
+.content {
+    background-color: #fff;
+}
+
+
+/*CHAT*/
+
+.chat {
+    padding-top: 44px;
+    padding-bottom: 95px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.chat .chat-data {
+    /*height: 78%;*/
+    max-height: 100%;
+    overflow: auto;
+}
+
+.chat .chat-action {
+    -webkit-box-shadow: 0 0 0;
+    box-shadow: 0 0 0;
+    margin-bottom: 5px;
+}
+
+.chat p {
+    color: rgba(17, 26, 35, 0.69);
+}
+
+.chat section {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px auto;
+}
+
+.chat .chat-data div {
+    max-width: 90%;
+    word-wrap: break-word;
+    margin-bottom: 10px;
+    line-height: 24px;
+}
+
+.chat .clear {clear: both}
+.chat .from-me {
+    position: relative;
+    padding: 10px 20px;
+    color: white;
+    background: #0B93F6;
+    border-radius: 25px;
+    float: right;
+}
+
+.chat .from-me:before {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    bottom:-2px;
+    right:-7px;
+    height:20px;
+    border-right:20px solid #0B93F6;
+    border-bottom-left-radius: 16px 14px;
+    -webkit-transform:translate(0, -2px);
+}
+
+.chat .from-me::after {
+    content:"";
+    position:absolute;
+    z-index:1;
+    bottom:-2px;
+    right:-56px;
+    width:26px;
+    height:20px;
+    background:white;
+    border-bottom-left-radius: 10px;
+    -webkit-transform:translate(-30px, -2px);
+}
+
+.chat .from-them {
+    position: relative;
+    padding: 10px 20px;
+    background: #E5E5EA;
+    border-radius: 25px;
+    color: black;
+    float: left;
+}
+
+.chat .from-them:before {
+    content:"";
+    position:absolute;
+    z-index:2;
+    bottom:-2px;
+    left:-7px;
+    height:20px;
+    border-left:20px solid #E5E5EA;
+    border-bottom-right-radius: 16px 14px;
+    -webkit-transform:translate(0, -2px);
+}
+
+.chat .from-them:after {
+    content:"";
+    position:absolute;
+    z-index:3;
+    bottom:-2px;
+    left:4px;
+    width:26px;
+    height:20px;
+    background:white;
+    border-bottom-right-radius: 10px;
+    -webkit-transform:translate(-30px, -2px);
+}

@@ -1,0 +1,13 @@
+<div class="content" ng-controller="chatCtrl">
+    <div class="bar bar-standard bar-header-secondary">
+        <input ng-model="search" type="search" placeholder="Search">
+    </div>
+
+    <ul style="padding-top: 44px;" class="table-view">
+        <li  ng-repeat="c in data" class="table-view-cell">
+            <a ng-click="changeState('chat', true, c)" class="navigate-right">
+                {{c.from}}
+            </a>
+        </li>
+    </ul>
+</div>

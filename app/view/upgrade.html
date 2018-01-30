@@ -1,0 +1,22 @@
+<div ng-controller="upgradeCtrl" style="z-index: 100000" class="upgrade-page">
+
+    <div class="upgrade-header">
+        <h4 class="">Upgrade to {{manifest.version}}</h4>
+    </div>
+
+    <div ng-show="!end" class="bg-spinner">
+        <div class="spinner-wrap">
+            <div class="spinner">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="upgrade-process">
+        {{statusText}}
+    </div>
+
+    <div ng-show="end" class="upgrade-error">
+        <span ng-click="goSettings()" class="btn btn-link">Back</span>
+    </div>
+</div>

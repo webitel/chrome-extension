@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>No login.</title>
+        <link rel="stylesheet" type="text/css" href="lib/ratchet-v2.0.2/css/ratchet.min.css">
+        <link rel="stylesheet" type="text/css" href="lib/ratchet-v2.0.2/css/ratchet-theme-ios.min.css">
+        <link rel="stylesheet" type="text/css" href="lib/ionicons-2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/font.css">
+    </head>
+    <body ng-app="vertoPhone"  id="phone" class="app" ng-class="_theme">
+
+    <div ng-include=" 'app/view/chaneStatus.html' ">
+
+    </div>
+
+    <header class="bar bar-nav bar-my-status">
+        <div class="segmented-control">
+            <div class="input-control">
+                <input ng-keyup="$event.keyCode == 13 && makeCall(search)" ng-model="search" type="search" placeholder="Search or Enter number">
+                <!--<button class="btn btn-link pull-right icon icon-pages ion-ios-videocam video-call-btn"></button>-->
+            </div>
+        </div>
+
+        <div class="segmented-control">
+            <a ng-click="setViewCall(call)" ng-class="{'bg-success': call.state == 'active', 'bg-danger': call.state == 'held'}" class="control-item header-call-item"
+               ng-repeat="call in activeCalls">
+                <p class="h5 header-call-number">{{call.displayNumber}}</p>
+            </a>
+        </div>
+
+        <!--<span class="bottom-info icon ion-ios-circle-filled"></span>-->
+
+        <span class="bottom-info" >
+                <span ng-click="showChangeStatusPage()" class="my-state-name" color-status="{{webitelUser.stateName}}">
+                    {{'   ' + webitelUser.stateName.substring(6)}}
+                </span>
+            </span>
+
+        <span class="bottom-info bottom-info-left">
+            <span ng-show="webitelUser.inCC === true" class="in-call-center">
+                <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 306.6 306.6" style="enable-background:new 0 0 306.6 306.6;" xml:space="preserve">
+                    <g>
+                        <path d="M135.355,173.211c-5.12,4.862-11.831,7.54-18.897,7.54c-15.137,0-27.451-12.314-27.451-27.451s12.314-27.451,27.451-27.451   c6.844,0,13.397,2.532,18.455,7.13c3.679,3.343,9.369,3.072,12.714-0.606c3.343-3.678,3.071-9.37-0.606-12.714   c-8.378-7.615-19.232-11.81-30.563-11.81c-25.062,0-45.451,20.39-45.451,45.451s20.39,45.451,45.451,45.451   c11.699,0,22.813-4.435,31.292-12.487c3.604-3.423,3.752-9.119,0.329-12.724C144.655,169.936,138.959,169.789,135.355,173.211z"></path>
+                        <path d="M220.396,173.211c-5.121,4.862-11.832,7.54-18.897,7.54c-15.137,0-27.451-12.314-27.451-27.451   s12.314-27.451,27.451-27.451c6.843,0,13.396,2.532,18.455,7.13c3.68,3.345,9.37,3.071,12.714-0.606   c3.343-3.679,3.071-9.371-0.606-12.714c-8.379-7.615-19.233-11.81-30.563-11.81c-25.062,0-45.451,20.39-45.451,45.451   s20.39,45.451,45.451,45.451c11.698,0,22.812-4.435,31.292-12.487c3.604-3.422,3.752-9.119,0.329-12.724   C229.695,169.937,224,169.788,220.396,173.211z"></path>
+                        <path d="M209.628,47.396H96.972C43.501,47.396,0,90.897,0,144.368v17.863c0,53.471,43.501,96.972,96.972,96.972h112.656   c53.471,0,96.972-43.501,96.972-96.972v-17.863C306.6,90.897,263.099,47.396,209.628,47.396z M288.6,162.231   c0,43.545-35.427,78.972-78.972,78.972H96.972C53.427,241.203,18,205.776,18,162.231v-17.863c0-43.545,35.427-78.972,78.972-78.972   h112.656c43.545,0,78.972,35.427,78.972,78.972V162.231z"></path>
+                    </g>
+                </svg>
+            </span>
+        </span>
+
+
+
+        <div class="error">
+            <div ng-click="closeError(e)" ng-repeat="e in errors" class="error-msg">{{e.message}}</div>
+        </div>
+
+    </header>
+
+    <nav ng-controller="navigate" class="bar bar-tab">
+
+        <a ng-click="changeState(key, false, tab)" ng-repeat="(key, tab) in tabs" ng-class="{'active': key == activeTabName}" class="tab-item">
+            <span ng-class="tab.class"></span>
+            <span class="tab-label">{{tab.name}}</span>
+        </a>
+
+    </nav>
+    <div ng-include="currentViewTemplate"></div>
+
+    <video id="localVideo" style="display: none"></video>
+    <video id="ringerDtmf" style="display: none"></video>
+    <video id="localTagVideo" style="display: none"></video>
+    <video id="remoteVideo" style="display: none;"></video>
+
+    <script type="text/javascript" src="lib/angular.min.js"></script>
+    <script type="text/javascript" src="lib/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="lib/marked.js"></script>
+    <script type="text/javascript" src="lib/ratchet-v2.0.2/js/ratchet.min.js"></script>
+    <script type="text/javascript" src="app/services/callService.js"></script>
+    <script type="text/javascript" src="app/services/cdrService.js"></script>
+    <script type="text/javascript" src="app/services/updateService.js"></script>
+    <script type="text/javascript" src="app/directive/date.js"></script>
+    <script type="text/javascript" src="app/ctrl/settingsCtrl.js"></script>
+    <script type="text/javascript" src="app/ctrl/dialpadCtrl.js"></script>
+    <script type="text/javascript" src="app/ctrl/callCtrl.js"></script>
+    <script type="text/javascript" src="app/ctrl/contactsCtrl.js"></script>
+    <script type="text/javascript" src="app/ctrl/historyCtrl.js"></script>
+    <script type="text/javascript" src="app/ctrl/favoritesCtrl.js"></script>
+    <script type="text/javascript" src="app/ctrl/internalListCtrl.js"></script>
+    <script type="text/javascript" src="app/ctrl/changeStatus.js"></script>
+    <script type="text/javascript" src="app/ctrl/upgradeCtrl.js"></script>
+    <!--<script type="text/javascript" src="app/ctrl/chatCtrl.js"></script>-->
+    <script type="text/javascript" src="app/app.js"></script>
+
+    </body>
+</html>

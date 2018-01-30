@@ -1,0 +1,164 @@
+<div class="content bg-default call-content" ng-controller="callCtrl">
+
+    <!-- Block button in standard bar fixed below top bar -->
+    <div class="bar bar-standard bar-header-secondary" style="height: 55px;top: 84px;">
+        <div style="text-align: center;" >
+            <!--<p ng-click="copyNumber(activeCall.calleeIdNumber)" title="Click to copy number" class="call-view-number">{{getDisplay(activeCall)}}</p>-->
+            <p ui-timer stop="activeCall.onHangupTime" start="activeCall.onActiveTime"></p>
+            <p>{{activeCall.displayName}}</p>
+        </div>
+    </div>
+
+    <div class="card card-call" style="margin: 50px 0px 50px 0px;border: 0;">
+        <ul ng-show="!activeCall.menuName" class="dialpad">
+            <li>
+                <button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-click="toggleMute(activeCall.id)" class="btn circle-btn icon" ng-class="{'active': activeCall.mute}">
+                    <span ng-show="!activeCall.mute" class="icon ion-ios-mic-off"></span>
+                    <span ng-show="activeCall.mute" class="icon ion-ios-mic"></span>
+                </button>
+                <button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-click="openMenu(activeCall.id, 'dialpad')" class="btn circle-btn icon">
+                    <span  class="icon ion-ios-keypad"></span>
+                </button>
+                <button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-click="openMenu(activeCall.id, 'transfer')" class="btn circle-btn icon">
+                    <span class="icon ion-ios-redo"></span>
+                </button>
+            </li>
+
+            <li>
+                <!--<button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-class="{'active': activeCall.screenShareCall}" ng-click="screenShare(activeCall.id)" class="btn circle-btn icon">-->
+                <!--<span class="ion-ios-monitor"></span>-->
+                <!--</button>-->
+                <button ng-disabled="!activeCall.postProcessId" ng-class="{'active': activeCall.screenShareCall}" ng-click="openMenu(activeCall.id, 'postProcess')" class="btn circle-btn icon">
+                    <span class="ion-compose"></span>
+                </button>
+
+                <!--TODO: Chat not working-->
+                <button ng-disabled="(activeCall.state != 'active' && activeCall.state != 'held') || (!activeCall.useVideo && !activeCall.initRemoteStream)" ng-click="openVideo(activeCall)" class="btn circle-btn icon">
+                    <span class="ion-ios-videocam"></span>
+                </button>
+
+                <button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-click="toggleHold(activeCall.id)" class="btn circle-btn icon" ng-class="{'active': activeCall.state == 'held'}">
+                    <span class="ion-ios-pause"></span>
+                </button>
+            </li>
+
+            <li ng-show="activeCall.webitelData.eavesdrop === true">
+                <button ng-click="dtmf('0')" class="btn circle-btn icon" ng-class="{'active': activeCall.dtmfArray[activeCall.dtmfArray.length - 1] == '0' && activeCall.state === 'active'}">
+                    <!--0-->
+                    <span class="ion-speakerphone"></span>
+                </button>
+                <button ng-click="dtmf('2')" class="btn circle-btn icon" ng-class="{'active': (activeCall.dtmfArray.length === 0 || activeCall.dtmfArray[activeCall.dtmfArray.length - 1] == '2') && activeCall.state === 'active'}">
+                    <!--1-->
+                    <span class="ion-help-buoy"></span>
+                </button>
+                <button ng-click="dtmf('3')" class="btn circle-btn icon" ng-class="{'active': activeCall.dtmfArray[activeCall.dtmfArray.length - 1] == '3' && activeCall.state === 'active'}">
+                    <!--3-->
+                    <span class="ion-person-stalker"></span>
+                </button>
+
+                <p>
+                    {{activeCall.webitelData.otherNumber}}
+                </p>
+            </li>
+
+            <li ng-show="true || activeCall.webitelData.eavesdrop !== true" class="webitel-data">
+                <div>
+                    <span ng-repeat="(key, val) in activeCall.webitelData" ng-bind-html="getMark(val)"></span>
+                </div>
+            </li>
+
+        </ul>
+
+        <div ng-show="activeCall.menuName == 'transfer'" style="text-align: center; padding: 5px;">
+            <input autofocus ng-keyup="$event.keyCode == 13 && transfer(activeCall.id, destinationNumber)" type="text" ng-model="destinationNumber">
+            <button ng-click="transfer(activeCall.id, destinationNumber)" class="btn circle-btn icon">
+                <span class="ion-ios-redo-outline"></span>
+            </button>
+
+            <table class="table table-call-action">
+                <tbody>
+                <tr ng-show="c.id != activeCall.id" ng-repeat="c in activeCalls">
+                    <td>
+                        {{c.calleeIdNumber}}
+                    </td>
+                    <td class="call-action">
+                        <span ng-click="bridge(activeCall.id, c.id)" style="border: 0;" class="btn btn-link  media-object pull-right icon att-x-fer-call-img">
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-show="activeCall.menuName == 'postProcess'"  class="post-process">
+            <div ng-show="activeCall.webitelDataPrivate.dlr_id">
+                <ul class="table-view dlr-post-data">
+                    <li class="table-view-cell">
+                        Success
+                        <div ui-toggle ng-model="activeCall.privateVariables.dlrSuccess"></div>
+                    </li>
+                    <li class="table-view-cell">
+                        Description
+                        <textarea ng-bind="setComment(activeCall.id, activeCall.comment)" autofocus rows="2" ng-model="activeCall.comment"></textarea>
+                    </li>
+                    <li ng-show="!activeCall.privateVariables.dlrSuccess"  class="table-view-cell">
+                        Call after (min)
+                        <input style="margin: 0;" type="number" ng-model="activeCall.privateVariables.dlrAfterMin"></input>
+                    </li>
+                    <li ng-show="!activeCall.privateVariables.dlrSuccess" class="table-view-cell">
+                        Do not call this number
+                        <div ui-toggle ng-model="activeCall.privateVariables.dlrDoNotCallThisNumber"></div>
+                    </li>
+                    <li ng-show="!activeCall.privateVariables.dlrSuccess && activeCall.privateVariables.dlrDoNotCallThisNumber"  class="table-view-cell">
+                        Add new number
+                        <input style="margin: 0;" type="text" ng-model="activeCall.privateVariables.dlrAddNewNumber"></input>
+                    </li>
+                </ul>
+            </div>
+            <div ng-show="!activeCall.webitelDataPrivate.dlr_id">
+                <p>Comment</p>
+                <textarea ng-bind="setComment(activeCall.id, activeCall.comment)" autofocus rows="9" ng-model="activeCall.comment"></textarea>
+
+                <ul class="call-rating" ng-class="{'vote-cast': activeCall.vote > 0}">
+                    <li ng-class="{'selected': activeCall.vote == 1}" ng-click="setVote(activeCall.id, 1, activeCall)" class="call-star">&star;</li>
+                    <li ng-class="{'selected': activeCall.vote == 2}" ng-click="setVote(activeCall.id, 2, activeCall)" class="call-star">&star;</li>
+                    <li ng-class="{'selected': activeCall.vote == 3}" ng-click="setVote(activeCall.id, 3, activeCall)" class="call-star">&star;</li>
+                    <li ng-class="{'selected': activeCall.vote == 4}" ng-click="setVote(activeCall.id, 4, activeCall)" class="call-star">&star;</li>
+                    <li ng-class="{'selected': activeCall.vote == 5}" ng-click="setVote(activeCall.id, 5, activeCall)" class="call-star">&star;</li>
+                </ul>
+            </div>
+
+
+        </div>
+
+        <div ng-show="activeCall.menuName == 'dialpad'"  ng-include=" 'app/view/dialpadTemplate.html' ">
+        </div>
+    </div>
+
+    <!-- Block button in standard bar fixed above the footer -->
+    <div class="bar bar-standard bar-footer-secondary card-call-footer" style="height: 65px">
+
+        <ul class="dialpad call-group">
+            <li>
+                <button ng-show="activeCall.menuName != 'postProcess'"
+                        ng-click="dropCall(activeCall.id)" class="btn circle-btn icon ion-ios-telephone hangup-call">
+
+                </button>
+                <button ng-click="answerCall(activeCall.id)"  class="btn circle-btn icon ion-ios-telephone call make-call" ng-show="activeCall.state == 'newCall' && activeCall.direction.name == 'inbound'">
+
+                </button>
+                <button  ng-click="answerCall(activeCall.id, true)"  class="btn circle-btn icon ion-ios-videocam call make-call-video" ng-show="useVideo && activeCall.state == 'newCall' && activeCall.direction.name == 'inbound'">
+
+                </button>
+
+                <button  ng-click="savePostProcess(activeCall)"  class="btn circle-btn icon ok-img"
+                         ng-show="activeCall.menuName == 'postProcess'">
+                </button>
+            </li>
+        </ul>
+
+        <a style="position: absolute;top: 22px;right: 10px;" class="card-call-btn-close" ng-click="openMenu(activeCall.id, '')" ng-show="activeCall.menuName && activeCall.state !== 'postProcess'">Close</a>
+
+    </div>
+
+</div>

@@ -1,0 +1,96 @@
+<div class="content settings" ng-controller="settingsCtrl">
+
+	<div class="card card-settings no-border" >
+
+	    <form  method="post">
+
+			<li class="table-view-cell">
+				Theme
+				<select class="auto-answer pull-right" ng-model="theme" ng-options="item.class as item.name for item in themes">
+				</select>
+				<!--<div ui-toggle ng-model="interface.autoAnswer"></div>-->
+			</li>
+
+
+			<li class="table-view-cell">
+				Agent auto login
+				<div ui-toggle ng-model="interface.autoLoginCC"></div>
+			</li>
+
+			<li class="table-view-cell">
+				Agent on demand
+				<div ui-toggle ng-model="interface.onDemand"></div>
+			</li>
+
+			<li class="table-view-cell">
+				Auto answer
+				<select class="auto-answer pull-right" ng-model="interface.autoAnswer" ng-options="item.id as item.label for item in autoAnswerParams">
+				</select>
+				<!--<div ui-toggle ng-model="interface.autoAnswer"></div>-->
+			</li>
+
+			<li class="table-view-cell">
+				Use video
+				<div ui-toggle ng-model="interface.useVideo"></div>
+			</li>
+
+			<li class="table-view-cell">
+				Notify new call
+				<div ui-toggle ng-model="interface.notificationNewCall"></div>
+			</li>
+
+			<li class="table-view-cell">
+				Notify missed call
+				<div ui-toggle ng-model="interface.notificationMissed"></div>
+			</li>
+
+			<li class="table-view-cell">
+				Ring! Ring!
+				<div ui-toggle ng-model="interface.ring"></div>
+			</li>
+
+			<li class="table-view-cell">
+				Always on top
+				<div ui-toggle ng-model="interface.alwaysOnTop"></div>
+			</li>
+			<li class="table-view-cell">
+				Use post process
+				<div ui-toggle ng-model="interface.usePostProcess"></div>
+			</li>
+
+			<li ng-show="!ver.needUpdate" ng-click="mustCheckNewVersion()" class="table-view-cell">Check new version
+				<button ng-disabled="processUpgrade" style="min-width: 45px;" class="btn">{{upgradeInfo}}</button>
+			</li>
+
+			<li ng-show="ver.needUpdate" class="table-view-cell">{{processUpgrade ? 'Please wait...' : 'Upgrade to'}}
+				<button ng-disabled="processUpgrade" ng-click="upgrade(ver.manifest)" style="min-width: 45px;" class="btn btn-negative">{{ver.manifest.version}}</button>
+			</li>
+
+			<div class="form-group">
+				<span class="ion-ios-mic"></span>
+				<select ng-model="interface.selectedAudio" ng-options="item.id as item.label for item in devices.audioInDevices">
+				</select>
+			</div>
+
+			<div class="form-group">
+				<span class="ion-radio-waves"></span>
+				<select ng-model="interface.ringerDevice" ng-options="item.id as item.label for item in devices.audioOutDevices">
+				</select>
+			</div>
+
+			<div class="form-group">
+				<span class="ion-ios-volume-high"></span>
+				<select ng-model="interface.selectedSpeaker" ng-options="item.id as item.label for item in devices.audioOutDevices">
+				</select>
+			</div>
+
+			<div class="form-group" ng-show="interface.useVideo">
+				<span class="ion-ios-camera"></span>
+				<select ng-model="interface.selectedVideo" ng-options="item.id as item.label for item in devices.videoDevices">
+				</select>
+			</div>
+
+	        <!--<button ng-click="saveSettings()" type="submit" class="btn btn-positive">Save</button>-->
+	    </form>
+	</div>
+</div>
