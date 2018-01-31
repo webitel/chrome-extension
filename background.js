@@ -6,6 +6,30 @@
 
 const CONTEXT_MENU_ID = 'selectAndCallWebitel';
 
+chrome.notifications.onClosed.addListener((notifId, byUser) => {
+    if (byUser && Helper.missedNotifications.hasOwnProperty(notifId))
+        delete Helper.missedNotifications[notifId];
+});
+
+
+chrome.notifications.onButtonClicked.addListener((notifId, btnIdx) => {
+    console.log(notifId);
+    if (Helper.missedNotifications.hasOwnProperty(notifId)) {
+        if (btnIdx === 0 && Helper.session) {
+            Helper.session.makeCall(Helper.missedNotifications[notifId].number);
+        }
+        delete  Helper.missedNotifications[notifId];
+        chrome.notifications.clear(notifId);
+        return;
+    }
+    const calls = Helper.session && Helper.session.activeCalls;
+    for (let key in calls) {
+        if (calls[key].notificationId === notifId) {
+            Helper.session.dropCall(key)
+        }
+    }
+    chrome.notifications.clear(notifId);
+});
 
 class Extension {
     constructor () {

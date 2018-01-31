@@ -7,7 +7,7 @@
 
             <td style="width: 30px; text-align: right;">
 
-                <button ng-show="myId != c.id && c.state === 'ONHOOK' && activeCall.state === 'active'" style="font-size: 10px; border: 0;" ng-click="eavesdropCall(myId, null, c.id, activeCall.id)" class="btn btn-link pull-right icon ion-person-add"></button>
+                <button ng-show="myId != c.id && c.state === 'ONHOOK' && activeCall.state === 'active'" style="font-size: 10px; border: 0;" ng-click="eavesdropCall(myId, null, c.id, activeCall.uuid)" class="btn btn-link pull-right icon ion-person-add"></button>
 
                 <button ng-show="myId != c.id && c.state === 'ISBUSY' && c.away=== 'NONE'" style="font-size: 10px; border: 0;" ng-click="showDetail(c)" ng-class="{'ion-ios-arrow-right': !c.showDetail, 'ion-ios-arrow-up': c.showDetail}" class="btn btn-link pull-right icon icon-pages"></button>
                 <!--<a ng-click="makeCall(c.id)" style="border: 0" class="btn btn-link  history-make-call">-->

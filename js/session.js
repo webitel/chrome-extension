@@ -159,6 +159,7 @@ class Session {
             //TODO for alow dialer
 
             if (call) {
+                call.uuid = webitelCall['my-uuid'];
                 this.setViewCall(call.id, true);
                 call.setState('active')
             }
@@ -405,8 +406,6 @@ class Session {
         this.activeCalls[call.uuid].destroy();
 	    if (this.activeCalls[call.uuid].postProcessId) {
             this.activeCalls[call.uuid].setState('postProcess');
-            //TODO
-            // this.activeCalls[call.uuid].destroy(call.userDropCall, call);
 
             this.openMenu(call.uuid, 'postProcess');
         } else {
@@ -579,7 +578,11 @@ class Session {
     }
 
     dropCall (id) {
-        this.webitel.hangup(id);
+        const call = this.activeCalls[id];
+        if (call) {
+            call.userDropCall = true;
+            this.webitel.hangup(id);
+        }
     }
 
     answerCall (id, params) {

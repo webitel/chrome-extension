@@ -840,6 +840,7 @@
                     result['other-leg-unique-id'] = channel['Other-Leg-Unique-ID'];
                     result['bridge-A-Unique-ID'] = channel['Bridge-A-Unique-ID'];
                     result['bridge-B-Unique-ID'] = channel['Bridge-B-Unique-ID'];
+                    result['my-uuid'] = channel[WebitelCallChanelVariables.UUID];
                 };
 
                 this.getJSONObject = function() {

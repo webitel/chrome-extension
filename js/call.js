@@ -9,6 +9,7 @@ class Call {
      */
     constructor (call) {
         this.id = call.uuid;
+        this.uuid = null;
         this.direction = call.direction;
         this.answered = false;
 
@@ -22,6 +23,7 @@ class Call {
         this.menuName = '';
         this.mute = false;
         this.muteVideo = false;
+        this.userDropCall = false;
 
         this.isView = true;
 
@@ -154,11 +156,11 @@ class Call {
             Helper.clearNotificationId(this.notificationId);
     }
 
-    destroy (userDropCall, d) {
+    destroy () {
         this._clearNotification();
         this.onChange = null;
  
-        if (!userDropCall && !this.onActiveTime && this.direction === "inbound")
+        if (!this.userDropCall && !this.onActiveTime && this.direction === "inbound")
             this.showMissed();
     }
 
@@ -187,14 +189,13 @@ class Call {
 
     showNewCall () {
         const session = Helper.session;
-        Helper.focus();
         if  (session && session.notificationNewCall()) {
             Helper.createNotification({
                 type: 'basic',
                 iconUrl: './images/call64.png',
                 title: "New call",
-                message: this.calleeIdNumber,
-                contextMessage: this.calleeIdName,
+                message: this.callerIdNumber,
+                contextMessage: this.callerIdName,
                 requireInteraction: true,
                 buttons: [
                     {
@@ -214,13 +215,13 @@ class Call {
 
     showMissed () {
         if  (Helper.session && Helper.session.notificationMissed()) {
-            const number = this.calleeIdNumber;
+            const number = this.callerIdNumber;
             Helper.createNotification({
                 type: 'basic',
                 iconUrl: './images/exclamation64.png',
                 title: "Missed call!",
                 message: number,
-                contextMessage: this.calleeIdName + '(' + new Date().toLocaleString() + ')',
+                contextMessage: this.callerIdName + '(' + new Date().toLocaleString() + ')',
                 requireInteraction: true,
                 buttons: [
                     {
