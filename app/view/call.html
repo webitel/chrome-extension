@@ -12,10 +12,11 @@
     <div class="card card-call" style="margin: 50px 0px 50px 0px;border: 0;">
         <ul ng-show="!activeCall.menuName" class="dialpad">
             <li>
-                <button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-click="toggleMute(activeCall.id)" class="btn circle-btn icon" ng-class="{'active': activeCall.mute}">
-                    <span ng-show="!activeCall.mute" class="icon ion-ios-mic-off"></span>
-                    <span ng-show="activeCall.mute" class="icon ion-ios-mic"></span>
+
+                <button ng-disabled="!activeCall.postProcessId" ng-class="{'active': activeCall.screenShareCall}" ng-click="openMenu(activeCall.id, 'postProcess')" class="btn circle-btn icon">
+                    <span class="ion-compose"></span>
                 </button>
+
                 <button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-click="openMenu(activeCall.id, 'dialpad')" class="btn circle-btn icon">
                     <span  class="icon ion-ios-keypad"></span>
                 </button>
@@ -25,15 +26,13 @@
             </li>
 
             <li>
-                <!--<button ng-disabled="activeCall.state != 'active' && activeCall.state != 'held'" ng-class="{'active': activeCall.screenShareCall}" ng-click="screenShare(activeCall.id)" class="btn circle-btn icon">-->
-                <!--<span class="ion-ios-monitor"></span>-->
-                <!--</button>-->
-                <button ng-disabled="!activeCall.postProcessId" ng-class="{'active': activeCall.screenShareCall}" ng-click="openMenu(activeCall.id, 'postProcess')" class="btn circle-btn icon">
-                    <span class="ion-compose"></span>
+
+                <button ng-disabled="true" ng-click="toggleMute(activeCall.id)" class="btn circle-btn icon" ng-class="{'active': activeCall.mute}">
+                    <span ng-show="!activeCall.mute" class="icon ion-ios-mic-off"></span>
+                    <span ng-show="activeCall.mute" class="icon ion-ios-mic"></span>
                 </button>
 
-                <!--TODO: Chat not working-->
-                <button ng-disabled="(activeCall.state != 'active' && activeCall.state != 'held') || (!activeCall.useVideo && !activeCall.initRemoteStream)" ng-click="openVideo(activeCall)" class="btn circle-btn icon">
+                <button ng-disabled="true" ng-click="openVideo(activeCall)" class="btn circle-btn icon">
                     <span class="ion-ios-videocam"></span>
                 </button>
 

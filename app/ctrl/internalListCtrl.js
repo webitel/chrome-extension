@@ -69,7 +69,7 @@ angular
             CallService.getUserChannels(record.id, (err, res) => {
                 if (err)
                     return console.error(err);
-                
+
                 record.channels = (res.data || []).map(i => {
                     return {
                         dest: i.cid_num === record.id ? i.callee_num || i.dest : i.cid_num,
