@@ -738,6 +738,11 @@ audio {
     fill: #fff;
 }
 
+
+#phone.app.dark .dialpad.call-group {
+    background-color: #34323b;
+}
+
 #phone.app.dark .bar {
     background-color: #34323a;
 }

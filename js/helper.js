@@ -218,19 +218,6 @@ var Helper = {
         chrome.notifications.create(params, cb);
     },
 
-    toggleShow: () => {
-        if (!Helper.phoneWindow)
-            return;
-
-        Helper._hidden = !Helper._hidden;
-
-        if (Helper._hidden) {
-            Helper.hide();
-        } else {
-            Helper.show();
-        }
-    },
-
     hide: () => {
     },
     show: () => {
@@ -239,72 +226,15 @@ var Helper = {
     focus: () => {
     },
 
-
-    getSettings: (cb) => {
-        if (Helper.session && Helper.session._settings)
-            return cb(Helper.session._settings);
-
-        let settings = {
-            iceServers: true,
-            ring: true,
-            alwaysOnTop: true
-        };
-
-        function copyTo(to, from) {
-            for (var key in from) {
-                if (from.hasOwnProperty(key)) {
-                    to[key] = from[key]
-                }
-            }
-        }
-
-        const storage = localStorage.getItem('settings');
-        if (storage) {
-            try {
-                settings = JSON.parse(storage);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        cb(settings, localStorage.getItem('x_key'), localStorage.getItem('x_token'));
-    },
-
-    setSettings: (data, cb) => {
-        var sync = {};
-        var local = {};
-
-        for (var key in data) {
-            if (!data.hasOwnProperty(key)) continue;
-            local[key] = data[key];
-        }
-        localStorage.setItem('settings', JSON.stringify(local));
-        cb()
-    },
-
-    saveSettings: (data) => {
-        if (!data.sessid ) {
-            data.sessid = $.verto.genUUID();
-        }
-
-        Helper.setSettings(data, () => {
-            // if (Helper.session) {
-            //     Helper.session.logout();
-            // }
-            //
-            // Helper.session = new Session(data);
-            //
-            // if (Helper.phoneWindow)
-            //     Helper.phoneWindow.window.vertoSession = Helper.session;
-
-            Helper.createNotificationMsg('Save', 'Saved settings', '', './images/success64.png', 2000);
-        });
-    },
-
     setView: (view, isPage, data) => {
+        if (!view) {
+            view = 'history';
+        }
         let newTemplate = view;
-        Helper.state._prevActiveTabName = Helper.state.activeTabName;
-        Helper.state.activeTabName = view;
+        if (view !== 'call') {
+            Helper.state.activeTabName = view;
+            Helper.state._prevActiveTabName = Helper.state.activeTabName || "history";
+        }
         if (isPage) {
             newTemplate += 'Page';
         }

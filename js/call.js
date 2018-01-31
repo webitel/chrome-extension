@@ -198,10 +198,6 @@ class Call {
                 requireInteraction: true,
                 buttons: [
                     {
-                        title: "Answer",
-                        iconUrl: "./images/call64.png"
-                    },
-                    {
                         title: "Hangup",
                         iconUrl: "./images/error64.png"
                     }

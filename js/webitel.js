@@ -1784,7 +1784,7 @@
                     return WebitelConnection._ready;
                 },
 
-                makeCall: function(extension, useVideo) {
+                makeCall: function(extension, useVideo, autoAnswerData) {
                     if ((!extension && extension != 0) /*|| !this.account()['online']*/)
                         return false;
                     extension = extension.replace(/\D/g, '');
@@ -1800,7 +1800,7 @@
                     } else {
                         var params = {
                             "extension": extension,
-                            "auto_answer_param": autoAnswerParam,
+                            "auto_answer_param": autoAnswerData ? "sip_auto_answer=true" : null, //autoAnswerParam || autoAnswerData,
                             "user": account
                         };
                         var call = new WebitelCommand(WebitelCommandTypes.Call,

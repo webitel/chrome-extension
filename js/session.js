@@ -31,6 +31,7 @@ class Session {
         this.useVideo = null;
         this.alwaysOnTop = false;
         this.autoLoginCC = false;
+        this.useSIPAutoAnswer = false;
 
         this.reloadSettings();
 
@@ -134,11 +135,14 @@ class Session {
 
             this.activeCalls[webitelCall.uuid] = new Call(webitelCall, null);
             const call = this.activeCalls[webitelCall.uuid];
-            if (call) {
-                if (this.usePostProcess && webitelCall.direction === "outbound") {
-                    // call.postProcessId = webitelCall.uuid;
-                }
-                call.setWebitelInfo(webitelCall);
+            if (this.usePostProcess && webitelCall.direction === "outbound") {
+                // call.postProcessId = webitelCall.uuid;
+            }
+            call.setWebitelInfo(webitelCall);
+
+            if (Object.keys(this.activeCalls).length === 1) {
+                this.setViewCall(call.id, true)
+            } else {
                 Helper.sendSession('changeCall', this.activeCalls);
             }
         });
@@ -175,9 +179,10 @@ class Session {
         this.webitel.onUnholdCall(webitelCall => {
             const call = this.activeCalls[webitelCall.uuid];
             if (call) {
-                call.setState('active')
+                call.setState('active');
+                Helper.sendSession('changeCall', this.activeCalls);
+                this.setViewCall(call.id, true)
             }
-            Helper.sendSession('changeCall', this.activeCalls);
         });
 
         this.webitel.onDtmfCall(webitelCall => {
@@ -218,7 +223,7 @@ class Session {
 
         this.webitel.onDisconnect( () => {
             Helper.changeTrayMenu();
-            Helper.sendSession('logout', {});
+            Helper.setView('login', false, null);
         });
 
         this.internalUsers = [];
@@ -266,6 +271,7 @@ class Session {
 
         this._notificationMissed = _interface.notificationMissed;
         this._notificationNewCall = _interface.notificationNewCall;
+        this.useSIPAutoAnswer = _interface.useSIPAutoAnswer;
         this.ring = './sound/iphone.mp3';
         this.isRingNotification = _interface.ring;
 
@@ -395,9 +401,6 @@ class Session {
     }
 
     setPostProcess (call) {
-        delete this.activeCalls[call.uuid];
-        Helper.sendSession('changeCall', this.activeCalls);
-        return;
         this.activeCalls[call.uuid].onHangupTime = Date.now();
         this.activeCalls[call.uuid].destroy();
 	    if (this.activeCalls[call.uuid].postProcessId) {
@@ -407,8 +410,7 @@ class Session {
 
             this.openMenu(call.uuid, 'postProcess');
         } else {
-            delete this.activeCalls[call.uuid];
-            Helper.sendSession('changeCall', this.activeCalls);
+            this.closeCall(call.uuid)
         }
     }
 
@@ -457,10 +459,20 @@ class Session {
                 });
             }
 
-            delete this.activeCalls[call.id];
-            Helper.sendSession('changeCall', this.activeCalls);
+            this.closeCall(call.id);
         } else {
             this.openMenu(call.id, '')
+        }
+    }
+
+    closeCall (id) {
+        delete this.activeCalls[id];
+        Helper.sendSession('changeCall', this.activeCalls);
+        const otherCalls = Object.keys(this.activeCalls);
+        if (otherCalls.length > 0) {
+            this.setViewCall(otherCalls[0], true);
+        } else {
+            Helper.setView(Helper.state._prevActiveTabName);
         }
     }
 
@@ -558,7 +570,7 @@ class Session {
 
     makeCall (number, option = {}) {
         this.lastCallNumber = number;
-        this.webitel.call(number, false);
+        this.webitel.call(number, false, this.useSIPAutoAnswer);
     }
 
     bridgeChannel (legA, legB) {
@@ -588,6 +600,14 @@ class Session {
             this.setActiveCall(id);
             Helper.sendSession('changeCall', this.activeCalls);
             Helper.setView('call', false, null);
+
+            for (let key in this.activeCalls) {
+                if (key !== call.id) {
+                    this.holdCall(key);
+                } else if (call.state === 'held') {
+                   // this.unholdCall(call.id)
+                }
+            }
         }
     }
 
