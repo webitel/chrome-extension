@@ -707,29 +707,54 @@
                 };
 
                 this.getCalleeNumber = function () {
-                    var chn = that.getActualChannel();
-                    if (chn[WebitelCallChanelVariables.WJsOriginate] &&
-                        chn[WebitelCallChanelVariables.CallerCalleeNumber] === chn[WebitelCallChanelVariables.CallerCallerNumber]) {
-                        return chn[WebitelCallChanelVariables.WJsOriginate]
-                            ? chn[WebitelCallChanelVariables.WJsOriginate].split('@')[0]
-                            : chn[WebitelCallChanelVariables.WJsOriginate]
-                    } else {
-                        if (/^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/.
-                            test(chn[WebitelCallChanelVariables.CallerCalleeNumber])) {
-                            return account.split('@')[0]
+                    var chn = that.getActualChannel(),
+                        num = "";
+                    if (this.getDirection() === WebitelCallDirectionTypes.Inbound) {
+                        if (!this.switchChannelInboundDisplay()) {
+                            num = chn[WebitelCallChanelVariables.CallerCalleeNumber];
+                        } else {
+                            num = chn[WebitelCallChanelVariables.CallerCallerNumber];
                         }
-                        return chn[WebitelCallChanelVariables.CallerCalleeNumber] ||
-                            that.getDestinationNumber();
+                    } else {
+                        if (this.switchChannelInboundDisplay()) {
+                            num = chn[WebitelCallChanelVariables.CallerCalleeNumber];
+                        } else {
+                            num = chn[WebitelCallChanelVariables.CallerCallerNumber];
+                        }
+                    }
+
+                    if (/^u?:?[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/.test(num)) {
+                        return WebitelConnection.getCurrentStatus().id;
+                    } else {
+                        return num;
                     }
                 };
                 this.getCalleeName = function () {
                     return that.getActualChannel()[WebitelCallChanelVariables.CallerCalleeName] || that.getCalleeNumber();
                 };
                 this.getCallerNumber = function () {
-                    var _actual = that.getActualChannel();
-                    return _actual[WebitelCallChanelVariables.CallerCallerNumber]
-                        ? _actual[WebitelCallChanelVariables.CallerCallerNumber].split('@')[0]
-                        : _actual[WebitelCallChanelVariables.CallerCallerNumber];
+                    var chn = that.getActualChannel(),
+                        num = "";
+
+                    if (this.getDirection() === WebitelCallDirectionTypes.Inbound) {
+                        if (this.switchChannelInboundDisplay()) {
+                            num = chn[WebitelCallChanelVariables.CallerCalleeNumber];
+                        } else {
+                            num = chn[WebitelCallChanelVariables.CallerCallerNumber];
+                        }
+                    } else {
+                        if (!this.switchChannelInboundDisplay()) {
+                            num = chn[WebitelCallChanelVariables.CallerCalleeNumber];
+                        } else {
+                            num = chn[WebitelCallChanelVariables.CallerCallerNumber];
+                        }
+                    }
+
+                    if (/^u?:?[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/.test(num)) {
+                        return WebitelConnection.getCurrentStatus().id;
+                    } else {
+                        return num;
+                    }
                 };
                 this.getCallerName = function () {
                     var _actual = that.getActualChannel();
@@ -754,6 +779,15 @@
                             ? WebitelCallDirectionTypes.Outbound
                             : WebitelCallDirectionTypes.Inbound
                     }
+                };
+
+                this.switchChannelInboundDisplay = () => {
+                    //#define switch_channel_inbound_display(_channel)
+                    // ((switch_channel_direction(_channel) == SWITCH_CALL_DIRECTION_INBOUND && !switch_channel_test_flag(_channel, CF_BLEG)) ||
+                    // (switch_channel_direction(_channel) == SWITCH_CALL_DIRECTION_OUTBOUND && switch_channel_test_flag(_channel, CF_DIALPLAN)))
+                    var chn = that.getActualChannel();
+                    return (chn['Call-Direction'] === 'inbound' && chn['Unique-ID'] === chn['Channel-Call-UUID']) ||
+                        (chn['Call-Direction'] === 'outbound' && chn['Channel-HIT-Dialplan'] === "true");
                 };
 
                 this.getDisplayNumber = function () {

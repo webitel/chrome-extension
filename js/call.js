@@ -27,8 +27,8 @@ class Call {
 
         this.isView = true;
 
-        this.displayName = call.displayNumber;
-        this.displayNumber = call.displayNumber;
+        this.displayName = this.direction === "inbound" ? this.callerIdNumber : this.calleeIdNumber;
+        this.displayNumber = this.direction === "inbound" ? this.callerIdName : this.calleeIdName;
 
         this.vote = null;
         this.comment = "";
