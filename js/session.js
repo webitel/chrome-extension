@@ -32,6 +32,7 @@ class Session {
         this.alwaysOnTop = false;
         this.autoLoginCC = false;
         this.useSIPAutoAnswer = false;
+        this.clickToCall = true;
 
         this.reloadSettings();
 
@@ -282,6 +283,7 @@ class Session {
         this.selectedSpeaker = _interface.selectedSpeaker;
         this.selectedAudio = _interface.selectedAudio;
         this.autoAnswer = _interface.autoAnswer;
+        this.clickToCall = _interface.clickToCall;
 
         this.useVideo = _interface.useVideo;
 
@@ -290,13 +292,15 @@ class Session {
         this.onDemand = _interface.onDemand || false;
         this.ringerDevice = _interface.ringerDevice || "any";
 
+        if (this.clickToCall) {
+            ext.CTITelephony.enable();
+        } else {
+            ext.CTITelephony.disable();
+        }
+
         if (this.verto) {
             this._setRinger();
             this.verto.options.useSpeak = this.selectedAudio || "any";
-        }
-
-        if (Helper.phoneWindow) {
-            Helper.phoneWindow.setAlwaysOnTop(this.alwaysOnTop);
         }
     }
 
