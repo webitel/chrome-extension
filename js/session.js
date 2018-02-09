@@ -570,6 +570,7 @@ class Session {
     makeCall (number, option = {}) {
         this.lastCallNumber = number;
         this.webitel.call(number, false, this.useSIPAutoAnswer);
+        Helper.setSearch("");
     }
 
     bridgeChannel (legA, legB) {

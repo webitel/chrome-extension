@@ -57,6 +57,10 @@ var Helper = {
         return res;
     },
 
+    setSearch: v => {
+        Helper.state.search = v || "";
+    },
+
     getActiveCall: () => {
         if (Helper.getSession()) {
             return Helper.session.activeCalls[Helper.session.activeCall];

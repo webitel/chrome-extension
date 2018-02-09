@@ -92,6 +92,7 @@ vertoPhone.run(function($rootScope, $window, CallService, $timeout) {
         $rootScope.activeTabName = state.activeTabName;
         $rootScope.isLoged = $rootScope.loggedIn = !!Helper.getSession();
         $rootScope.serverEngine = localStorage.getItem('serverEngine');
+        $rootScope.search = state.search || "";
 
         if (Helper.session) {
             window.vertoSession = Helper.session;
@@ -103,6 +104,10 @@ vertoPhone.run(function($rootScope, $window, CallService, $timeout) {
 
         $rootScope.$apply();
     }
+
+    $rootScope.$watch('search', v => {
+        Helper.setSearch(v);
+    });
 
 
     $rootScope.login = function (login, password, serverEngine, iceServers) {
