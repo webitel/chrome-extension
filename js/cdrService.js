@@ -24,56 +24,47 @@ class CDR {
     }
 
     byUuid(call_uuid, cb) {
-        let body = {};
-        body.columns = {};
-        body.fields = {};
-
-        body.filter = {"variables.uuid": call_uuid};
-        body.sort = {};
-        body.limit = 1;
-
-        body = JSON.stringify(body);
-
-        this.session.cdrRequest("POST", "/api/v2/cdr/searches/", body, cb);
+        this.session.cdrRequest("GET", `/api/v2/cdr/${call_uuid}`, {}, cb);
     }
 
     list(page, qs, cb) {
         const body = {
             "columns": [
-                "CallerID number",
-                "variables.effective_caller_id_name", //TODO
-
-                "Destination number",
-                "variables.duration",
-                "variables.webitel_direction",
-                "variables.hangup_cause",
-                "variables.uuid",
-                "variables.cc_queue",
+                "uuid",
+                "direction",
+                "caller_id_name",
+                "caller_id_number",
+                "destination_number",
+                "billsec",
+                "holdsec",
+                "duration",
+                "queue.name",
+                "created_time",
+                "hangup_cause",
                 "post_data.comment",
                 "post_data.vote"
-                // "variables.billsec",
-                // "hold_accum_seconds"
             ],
             "includes": ["recordings"],
-            "columnsDate": ["Call start time", "Call answer time", "Bridge time", "Call end time"],
+            "columnsDate": [],
             "pageNumber": page,
             "limit": 40,
             "query": qs,
-            // "domain": "10.10.10.144", //TODO DODO
             "filter": {
-                "range": {
-                    "variables.start_stamp": {
-                        "gte" : "now-7d/d",
-                        "lt" :  "now",
-                        "format": "epoch_millis"
-                    }
+                "bool": {
+                    "must": [
+                        {
+                            "range": {
+                                "created_time": {
+                                    "gte" : "now-7d/d",
+                                    "lt" :  "now",
+                                    "format": "epoch_millis"
+                                }
+                            }
+                        }
+                    ]
                 }
             },
             "sort": {
-                "Call start time": {
-                    "order": "desc",
-                    "missing": "_last"
-                }
             }
         };
 
@@ -94,7 +85,7 @@ class CDR {
 
         items.forEach( item => {
             this.count++;
-            by = new Date(item[['Call start time']]);
+            by = new Date(item[['created_time']]);
             if (!lastGroup) {
                 lastGroup = makeGroup(by.toLocaleDateString());
                 this.groups.push(lastGroup)
@@ -104,8 +95,8 @@ class CDR {
             }
 
             item.startTime = by.toTimeString().split(' ')[0];
-            item.durationString = intToTimeString(item['variables.duration']);
-            item.imgClassName = getImgCall(item['variables.webitel_direction'], item['variables.hangup_cause'], !!item['variables.cc_queue']);
+            item.durationString = intToTimeString(item['duration']);
+            item.imgClassName = getImgCall(item['direction'], item['hangup_cause'], !!item['queue.name']);
 
             lastGroup.items.push(item)
         });

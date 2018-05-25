@@ -1,6 +1,6 @@
 <div class="content history" ng-controller="historyCtrl">
     <!--<div class="bar bar-standard bar-header-secondary">-->
-        <!--<input ng-model="search" type="search" placeholder="Search">-->
+    <!--<input ng-model="search" type="search" placeholder="Search">-->
     <!--</div>-->
 
     <table class="table">
@@ -27,7 +27,7 @@
                 <img class="{{i.imgClassName}}">
             </td>
             <td >
-                <a href="#" tooltip="{{i['CallerID number']}}" ng-click="makeCall(i['CallerID number'])">{{i["variables.effective_caller_id_name"] ? i["variables.effective_caller_id_name"] : i['CallerID number']}}</a> to <a href="#" ng-click="makeCall(i['Destination number'])">{{i['Destination number']}}</a> duration <span>{{i.durationString}}</span>
+                <a href="#" tooltip="{{i['caller_id_number']}}" ng-click="makeCall(i['caller_id_number'])">{{i["caller_id_name"] ? i["caller_id_name"] : i['caller_id_number']}}</a> to <a href="#" ng-click="makeCall(i['destination_number'])">{{i['destination_number']}}</a> duration <span>{{i.durationString}}</span>
                 <span ng-repeat="rec in i.recordings" class="pull-right" ng-class="getRecordingsClass(rec)">
 
                 </span>
@@ -39,12 +39,12 @@
         </tr>
         <tr ng-show="i.showDetail && g.show" ng-repeat-end="">
             <td colspan="4">
-                <button style="font-size: 10px; border: 0;" ng-click="openJson(i['variables.uuid'])"  class="btn btn-link pull-right file-json"></button>
+                <button style="font-size: 10px; border: 0;" ng-click="openJson(i['uuid'])"  class="btn btn-link pull-right file-json"></button>
 
-                <p class="history-detail-data">Cause: {{i['variables.hangup_cause']}}</p>
-                <p class="history-detail-data" ng-show="i['variables.billsec']"><span>Bill:</span> {{i['variables.billsec']}}</p>
-                <p class="history-detail-data" ng-show="i['variables.hold_accum_seconds']"><span>Hold:</span> {{i['variables.hold_accum_seconds']}}</p>
-                <p class="history-detail-data" ng-show="i['variables.hold_accum_seconds']"><span>Queue:</span> {{i['variables.cc_queue']}}</p>
+                <p class="history-detail-data">Cause: {{i['hangup_cause']}}</p>
+                <p class="history-detail-data" ng-show="i['billsec']"><span>Bill:</span> {{i['billsec']}}</p>
+                <p class="history-detail-data" ng-show="i['holdsec']"><span>Hold:</span> {{i['holdsec']}}</p>
+                <p class="history-detail-data" ng-show="i['queue.name']"><span>Queue:</span> {{i['queue.name']}}</p>
                 <p ng-show="i['post_data.comment']"  class="history-detail-data">
                     <span>Comment:</span> {{i['post_data.comment']}}
                 </p>
